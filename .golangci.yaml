@@ -1,0 +1,168 @@
+run:
+  concurrency: 8
+  timeout: 10m
+
+linters-settings:
+  cyclop:
+    max-complexity: 30
+    package-average: 10.0
+
+  dupl:
+    threshold: 100
+
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+  exhaustive:
+    check:
+      - switch
+      - map
+
+  funlen:
+    lines: 100
+    ignore-comments: true
+
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+
+  gocognit:
+    min-complexity: 15
+
+  gocyclo:
+    min-complexity: 10
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+      
+  gofumpt:
+    extra-rules: true
+
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+    settings:
+      shadow:
+        strict: true
+
+  nakedret:
+    max-func-lines: 0
+
+  nolintlint:
+    require-explanation: true
+    require-specific: true
+
+  rowserrcheck:
+    packages:
+      - "github.com/realPointer/segments/pkg/postgres"
+
+linters:
+  disable-all: true
+  enable:
+    - errcheck # checking for unchecked errors, these unchecked errors can be critical bugs in some cases
+    - gosimple # specializes in simplifying a code
+    - govet # reports suspicious constructs
+    - ineffassign # detects when assignments to existing variables are not used
+    - staticcheck # set of rules from staticcheck
+    - unused # checks for unused constants, variables, functions and types
+    
+    - asasalint # checks for pass []any as any in variadic func(...any)
+    - asciicheck # checks that all code identifiers does not have non-ASCII symbols in the name.
+    - bidichk # checks for dangerous unicode character sequences
+    - bodyclose # checks whether HTTP response body is closed successfully
+    - copyloopvar # detects places where loop variables are copied
+    - cyclop # checks function and package cyclomatic complexity
+    - dupl # tool for code clone detection
+    - durationcheck # checks for two durations multiplied together
+    - errname # checks that sentinel errors are prefixed with the Err and error types are suffixed with the Error
+    - errorlint # finds code that will cause problems with the error wrapping scheme introduced in Go 1.13
+    - execinquery # checks query string in Query function which reads your Go src files and warning it finds
+    - exhaustive # checks exhaustiveness of enum switch statements
+    - exhaustruct # checks if all structure fields are initialized
+    - exportloopref # checks for pointers to enclosing loop variables
+    - forbidigo # forbids identifiers
+    - funlen # tool for detection of long functions
+    - gci # controls go package import order and makes it always deterministic
+    - gocheckcompilerdirectives # validates go compiler directive comments (//go:)
+    - gochecknoglobals # checks that no global variables exist
+    - gochecknoinits # checks that no init functions are present in Go code
+    - gochecksumtype # checks exhaustiveness on Go "sum types"
+    - gocognit # computes and checks the cognitive complexity of functions
+    - goconst # finds repeated strings that could be replaced by a constant
+    - gocritic # provides diagnostics that check for bugs, performance and style issues
+    - gocyclo # computes and checks the cyclomatic complexity of functions
+    - goerr113 # checks the errors handling expressions
+    - gofumpt # checks whether code was gofumpt-ed
+    - goimports # checks import statements are formatted according to the 'goimport' command
+    - gomnd # detects magic numbers
+    - gomoddirectives # manages the use of 'replace', 'retract', and 'excludes' directives in go.mod
+    - gomodguard # allow and block lists linter for direct Go module dependencies
+    - goprintffuncname # checks that printf-like functions are named with f at the end
+    - gosec # inspects source code for security problems
+    - intrange # finds places where for loops could make use of an integer range
+    - lll # reports long lines
+    - makezero # finds slice declarations with non-zero initial length
+    - mirror # reports wrong mirror patterns of bytes/strings usage
+    - misspell # finds commonly misspelled English words
+    - musttag # enforces field tags in (un)marshaled structs
+    - nakedret # checks that functions with naked returns are not longer than a maximum size 
+    - nestif # reports deeply nested if statements
+    - nilerr # finds the code that returns nil even if it checks that the error is not nil.
+    - nilnil # checks that there is no simultaneous return of nil error and an invalid value
+    - noctx # finds sending http request without context.Context
+    - nolintlint # reports ill-formed or insufficient nolint directives
+    - nonamedreturns # reports all named returns
+    - nosprintfhostport # checks for misuse of Sprintf to construct a host with port in a URL
+    - perfsprint # checks that fmt.Sprintf can be replaced with a faster alternative
+    - prealloc # finds slice declarations that could potentially be pre-allocated
+    - predeclared # finds code that shadows one of Go's predeclared identifiers
+    - promlinter # checks Prometheus metrics naming via promlint
+    - reassign # checks that package variables are not reassigned
+    - revive # fast, configurable, extensible, flexible, and beautiful linter for Go. Drop-in replacement of golint
+    - rowserrcheck # checks whether Err of rows is checked successfully
+    - sqlclosecheck # checks that sql.Rows and sql.Stmt are closed
+    - stylecheck # is a replacement for golint
+    - tagalign # checks that struct tags are well aligned.
+    - testableexamples # checks if examples are testable (have an expected output)
+    - testifylint # checks usage of github.com/stretchr/testify
+    - testpackage # makes you use a separate _test package
+    - tparallel # detects inappropriate usage of t.Parallel() method in your Go test codes
+    - unconvert # removes unnecessary type conversions
+    - unparam # reports unused function parameters
+    - usestdlibvars # detects the possibility to use variables/constants from the Go standard library
+    - wastedassign # finds wasted assignment statements
+    - whitespace # detects leading and trailing whitespace
+    - wrapcheck # checks that errors returned from external packages are wrapped
+    - wsl # adds or remove empty lines.
+    - zerologlint # detects the wrong usage of zerolog that a user forgets to dispatch with Send or Msg
+
+issues:
+  max-issues-per-linter: 0
+
+  max-same-issues: 0
+
+  exclude-dirs:
+    - docs
+    - bin
+    - vendor
+    - var
+    - tmp
+    - .cache
+
+  exclude-rules:
+    - path: "_test\\.go"
+      linters:
+        - bodyclose
+        - dupl
+        - funlen
+        - goconst
+        - gosec
+        - noctx
+        - wrapcheck

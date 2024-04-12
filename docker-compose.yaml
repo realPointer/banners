@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16.2-alpine3.19
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    restart: unless-stopped
+
+  banners:
+    container_name: banners
+    build: .
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    ports:
+      - ${HTTP_PORT}:${HTTP_PORT}
+    restart: unless-stopped
+
+volumes:
+  pg-data:

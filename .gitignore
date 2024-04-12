@@ -1,0 +1,15 @@
+# IDE
+.idea
+.vscode
+
+# Config
+# .env
+
+# Binaries for programs and plugins
+bin/
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
