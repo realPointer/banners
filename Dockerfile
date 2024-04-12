@@ -14,7 +14,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 
 # Step 3: Final
 FROM scratch
-# COPY --from=builder /app/config /config
-# COPY --from=builder /app/migrations /migrations
+COPY --from=builder /app/config /config
+COPY --from=builder /app/migrations /migrations
 COPY --from=builder /bin/app /app
 CMD ["/app"]

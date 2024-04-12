@@ -1,17 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
-	"github.com/realPointer/banners/pkg/logger"
+	"github.com/realPointer/banners/internal/app"
 )
 
 func main() {
-	l, err := logger.New("debug")
-	if err != nil {
-		log.Fatal(fmt.Errorf("failed to create logger: %w", err))
-	}
-
-	l.Info().Msg("Hello, World!")
+	app.Run()
 }
