@@ -1,7 +1,14 @@
+CREATE TABLE IF NOT EXISTS users (
+    username VARCHAR(255) PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS banners (
     id SERIAL PRIMARY KEY,
     last_version INTEGER NOT NULL DEFAULT 1,
-    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    is_active BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
     deleted BOOLEAN NOT NULL DEFAULT FALSE
@@ -12,7 +19,7 @@ CREATE TABLE IF NOT EXISTS feature_tag_banners (
     feature_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
     PRIMARY KEY (feature_id, tag_id, banner_id),
-    CONSTRAINT unq_banner_feature UNIQUE (banner_id, feature_id)
+    CONSTRAINT unq_feature_tag UNIQUE (feature_id, tag_id)
 );
 
 CREATE TABLE IF NOT EXISTS banner_versions (

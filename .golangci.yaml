@@ -61,7 +61,10 @@ linters-settings:
 
   rowserrcheck:
     packages:
-      - "github.com/realPointer/segments/pkg/postgres"
+      - "github.com/realPointer/banners/pkg/postgres"
+
+  lll:
+    line-length: 130
 
 linters:
   disable-all: true

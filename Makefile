@@ -13,7 +13,7 @@ compose-down: ### Down docker-compose
 .PHONY: compose-down
 
 docker-rm-volume: ### Remove docker volume
-	docker volume rm banners_pg-data
+	docker volume rm banners_pg-data banners_redis-data
 .PHONY: docker-rm-volume
 
 install-all: ### Install all tools
@@ -30,9 +30,13 @@ lint: ### Check by golangci linter
 	$(LOCAL_BIN)/golangci-lint run
 .PHONY: lint
 
-test: ### Run test
-	go test -v ./...
+test: ### Run unit tests
+	go test -v ./internal/...
 .PHONY: test
+
+integration-test: ### Run integration-test
+	go clean -testcache && go test -v ./integration-tests/...
+.PHONY: integration-test
 
 install-migrate: ### Install migrate
 	GOBIN=$(LOCAL_BIN) go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.17.0

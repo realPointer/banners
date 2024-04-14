@@ -3,16 +3,19 @@ package config
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
 type (
 	Config struct {
-		App  `yaml:"app"`
-		HTTP `yaml:"http"`
-		Log  `yaml:"logger"`
-		PG   `yaml:"postgres"`
+		App   `yaml:"app"`
+		HTTP  `yaml:"http"`
+		Log   `yaml:"logger"`
+		PG    `yaml:"postgres"`
+		Redis `yaml:"redis"`
+		JWT   `yaml:"jwt"`
 	}
 
 	App struct {
@@ -31,6 +34,16 @@ type (
 	PG struct {
 		PoolMax int    `env:"PG_POOL_MAX" env-required:"true" yaml:"pool_max"`
 		URL     string `env:"PG_URL"      env-required:"true"`
+	}
+
+	Redis struct {
+		URL string `env:"REDIS_URL" env-required:"true"`
+	}
+
+	JWT struct {
+		SignKey  string        `env-required:"true"                  env:"JWT_SIGN_KEY"`
+		TokenTTL time.Duration `env-required:"true" yaml:"token_ttl" env:"JWT_TOKEN_TTL"`
+		Salt     string        `env-required:"true" env:"JWT_SALT"`
 	}
 )
 

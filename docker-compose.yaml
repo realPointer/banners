@@ -17,17 +17,38 @@ services:
       retries: 5
     restart: unless-stopped
 
+  redis:
+    container_name: redis
+    image: redis:7.2.4-alpine
+    volumes:
+      - redis-data:/data
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    restart: unless-stopped
+
   banners:
     container_name: banners
     build: .
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_started
     env_file:
       - .env
     ports:
       - ${HTTP_PORT}:${HTTP_PORT}
     restart: unless-stopped
 
+  integration:
+    container_name: integration
+    build:
+      context: .
+      dockerfile: integration-tests/Dockerfile
+    image: integration
+    depends_on:
+      - banners
+
 volumes:
   pg-data:
+  redis-data:

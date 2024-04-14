@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"log"
 	"os"
 	"os/signal"
@@ -14,6 +13,7 @@ import (
 	"github.com/realPointer/banners/pkg/httpserver"
 	"github.com/realPointer/banners/pkg/logger"
 	"github.com/realPointer/banners/pkg/postgres"
+	"github.com/realPointer/banners/pkg/redis"
 )
 
 func Run() {
@@ -36,19 +36,23 @@ func Run() {
 	}
 	defer pg.Close()
 
-	err = pg.Pool.Ping(context.Background())
+	// Redis
+	rdb, err := redis.New(cfg.Redis.URL)
 	if err != nil {
-		l.Fatal().Err(err).Msg("app - Run - pg.Pool.Ping")
+		l.Fatal().Err(err).Msg("app - Run - redis.New")
 	}
 
 	// Repositories
-	repositories := repository.NewRepositories(pg)
+	repositories := repository.NewRepositories(l, pg, rdb)
 
 	// Services dependencies
 	deps := service.ServicesDependencies{
 		Repositories: repositories,
+		SignKey:      cfg.JWT.SignKey,
+		TokenTTL:     cfg.JWT.TokenTTL,
+		Salt:         cfg.JWT.Salt,
 	}
-	services := service.NewServices(deps)
+	services := service.NewServices(l, deps)
 
 	// HTTP Server
 	handler := v1.NewRouter(l, services)
